@@ -175,7 +175,7 @@ local get_matches = ts_utils.memoize_by_buf_tick(function(bufnr)
         indent = new_header_indent,
       })
 
-      local content_indent_pad
+      local content_indent_pad = 0
       -- Only include the header line and the content. Do not include the footer in the loop.
       for i = range.start.line + 1, range['end'].line - 2 do
         local linenr = i + 1
@@ -241,6 +241,9 @@ end)
 -- TLDR: The caching avoids some inconsistent race conditions with getting the Treesitter matches.
 local buf_indentexpr_cache = {}
 local function indentexpr(linenr, bufnr)
+  if bufnr and bufnr < 0 then
+    return -1
+  end
   linenr = linenr or vim.v.lnum
   local mode = vim.fn.mode()
   query = query or vim.treesitter.query.get('org', 'org_indent')
