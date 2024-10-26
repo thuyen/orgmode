@@ -832,6 +832,37 @@ function Headline:update_cookie(list_node)
   end
 end
 
+function Headline:update_cookies()
+  local section = self:node():parent()
+  if not section then
+    return nil
+  end
+  local num_boxes, num_checked_boxes = 0, 0
+
+  local body = section:field('body')[1]
+  for node in body:iter_children() do
+    if node:type() == 'list' then
+      local boxes = self:child_checkboxes(node)
+      num_boxes = num_boxes + #boxes
+      local checked_boxes = vim.tbl_filter(function(box)
+        return box:match('%[%w%]')
+      end, boxes)
+      num_checked_boxes = num_checked_boxes + #checked_boxes
+    end
+  end
+
+  local cookie = self:get_cookie()
+  if cookie then
+    local new_cookie_val
+    if self.file:get_node_text(cookie):find('%%') then
+      new_cookie_val = ('[%d%%]'):format((num_checked_boxes / num_boxes) * 100)
+    else
+      new_cookie_val = ('[%d/%d]'):format(num_checked_boxes, num_boxes)
+    end
+    return self:_set_node_text(cookie, new_cookie_val)
+  end
+end
+
 function Headline:child_checkboxes(list_node)
   return vim.tbl_map(function(node)
     local text = self.file:get_node_text(node)
