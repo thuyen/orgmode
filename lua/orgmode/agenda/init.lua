@@ -113,6 +113,13 @@ function Agenda:prompt()
     end,
   })
   menu:add_option({
+    label = 'Match NEW TAGS',
+    key = 'n',
+    action = function()
+      return self:tags({tags = 'NEW'})
+    end,
+  })
+  menu:add_option({
     label = 'Match a TAGS/PROP/TODO query',
     key = 'm',
     action = function()
