@@ -341,6 +341,13 @@ function Agenda:set_tags()
   })
 end
 
+function Agenda:org_store_link()
+  return self:_remote_edit({
+    action = 'org_mappings.org_store_link',
+    update_in_place = true,
+  })
+end
+
 function Agenda:set_deadline()
   return self:_remote_edit({
     action = 'org_mappings.org_deadline',
