@@ -214,6 +214,18 @@ function Headline:has_tag(tag)
   return false
 end
 
+---Remove a tag
+---@param tag string
+function Headline:remove_tag(tag)
+  local current_tags = self:get_own_tags()
+  if vim.tbl_contains(current_tags, tag) then
+    current_tags = vim.tbl_filter(function(t)
+      return t ~= tag
+    end, current_tags)
+    return self:set_tags(utils.tags_to_string(current_tags))
+  end
+end
+
 memoize('get_category')
 --- @return string
 function Headline:get_category()
