@@ -21,6 +21,7 @@ function AgendaTagsView:new(opts)
     content = {},
     highlights = {},
     items = {},
+    tags = opts.tags or nil,
     search = opts.search or '',
     todo_only = opts.todo_only or false,
     filters = opts.filters or AgendaFilter:new(),
@@ -34,7 +35,7 @@ function AgendaTagsView:new(opts)
 end
 
 function AgendaTagsView:build()
-  local tags = vim.fn.OrgmodeInput('Match: ', self.search, function(arg_lead)
+  local tags = self.tags or vim.fn.OrgmodeInput('Match: ', self.search, function(arg_lead)
     utils.prompt_autocomplete(arg_lead, self.files:get_tags())
   end)
   if vim.trim(tags) == '' then

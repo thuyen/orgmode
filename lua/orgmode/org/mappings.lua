@@ -942,6 +942,7 @@ function OrgMappings:org_deadline()
       end
       headline:remove_closed_date()
       headline:set_deadline_date(new_date)
+      headline:remove_tag("NEW")
     end)
 end
 
@@ -959,6 +960,7 @@ function OrgMappings:org_schedule()
       end
       headline:remove_closed_date()
       headline:set_scheduled_date(new_date)
+      headline:remove_tag("NEW")
     end)
 end
 
