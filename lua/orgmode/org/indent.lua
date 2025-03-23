@@ -95,9 +95,6 @@ local get_matches = ts_utils.memoize_by_buf_tick(function(bufnr)
   local matches = {}
   local mode = vim.fn.mode()
   local root = tree[1]:root()
-  if root:has_error() then
-    return false
-  end
   for id, node in query:iter_captures(root, bufnr, 0, -1) do
     local range = ts_utils.node_to_lsp_range(node)
     local type = node:type()
