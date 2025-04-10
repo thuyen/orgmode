@@ -301,6 +301,21 @@ function OrgFile:find_headline_by_title(title)
   end)
 end
 
+---@param title string
+---@return OrgHeadline | nil
+function OrgFile:find_or_create_headline_by_title(title)
+  local headline = self:find_headline_by_title(title)
+  if headline then
+    return headline
+  end
+  self
+    :update(function()
+      vim.api.nvim_buf_set_lines(self:bufnr(), -1, -1, false, { '* ' .. title })
+    end)
+    :wait()
+  return self:find_headline_by_title(title)
+end
+
 memoize('get_todo_keywords')
 function OrgFile:get_todo_keywords()
   local todo_directives = self:_get_directive('todo', true)

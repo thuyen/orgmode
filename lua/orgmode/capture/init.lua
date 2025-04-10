@@ -601,7 +601,7 @@ function Capture:_get_refile_vars(capture_window)
       return false
     end
 
-    opts.destination_headline = opts.destination_file:find_headline_by_title(template_headline)
+    opts.destination_headline = opts.destination_file:find_or_create_headline_by_title(template_headline)
     if not opts.destination_headline then
       utils.echo_error(('Refile headline "%s" does not exist in "%s"'):format(template_headline, file))
       return false
